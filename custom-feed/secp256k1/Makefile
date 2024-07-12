@@ -29,19 +29,20 @@ CONFIGURE_ARGS += \
   --enable-module-ecdh
 
 define Build/Compile
-  $(MAKE) -C $(PKG_BUILD_DIR) \
-    CC="$(TARGET_CC)" \
-    AR="$(TARGET_AR)" \
-    RANLIB="$(TARGET_RANLIB)" \
-    CFLAGS="$(TARGET_CFLAGS)" \
-    LDFLAGS="$(TARGET_LDFLAGS)"
+	$(MAKE) -C $(PKG_BUILD_DIR) \
+		CC="$(TARGET_CC)" \
+		AR="$(TARGET_AR)" \
+		RANLIB="$(TARGET_RANLIB)" \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)"
 endef
 
 define Package/secp256k1/install
-  $(INSTALL_DIR) $(1)/usr/lib
-  $(INSTALL_BIN) $(PKG_BUILD_DIR)/.libs/libsecp256k1.so* $(1)/usr/lib/
-  $(INSTALL_DIR) $(1)/usr/include
-  $(INSTALL_BIN) $(PKG_BUILD_DIR)/include/secp256k1*.h $(1)/usr/include/
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/.libs/libsecp256k1.so* $(1)/usr/lib/
+	$(INSTALL_DIR) $(1)/usr/include
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/include/secp256k1*.h $(1)/usr/include/
 endef
 
 $(eval $(call BuildPackage,secp256k1))
+
