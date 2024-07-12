@@ -28,6 +28,10 @@ CONFIGURE_ARGS += \
   --enable-experimental \
   --enable-module-ecdh
 
+define Build/Configure
+	$(call Build/Configure/Default)
+endef
+
 define Build/Compile
 	$(MAKE) -C $(PKG_BUILD_DIR) \
 		CC="$(TARGET_CC)" \
