@@ -8,8 +8,6 @@ PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/bitcoin-core/secp256k1.git
 PKG_SOURCE_VERSION:=HEAD
 
-PKG_MIRROR_HASH:=skip
-
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
@@ -25,20 +23,36 @@ define Package/secp256k1/description
   Optimized C library for EC operations on curve secp256k1
 endef
 
+CONFIGURE_ARGS += \
+  --enable-module-recovery \
+  --enable-experimental \
+  --enable-module-ecdh
+
 define Build/Prepare
-	$(call Build/Prepare/Default)
-	mkdir -p $(PKG_BUILD_DIR)
-	echo "int main() { return 0; }" > $(PKG_BUILD_DIR)/dummy.c
+  $(call Build/Prepare/Default)
+  cd $(PKG_BUILD_DIR) && ./autogen.sh
+endef
+
+define Build/Configure
+  $(call Build/Configure/Default)
 endef
 
 define Build/Compile
-	$(TARGET_CC) $(TARGET_CFLAGS) $(PKG_BUILD_DIR)/dummy.c -o $(PKG_BUILD_DIR)/dummy
+  $(MAKE) -C $(PKG_BUILD_DIR) \
+    CC="$(TARGET_CC)" \
+    AR="$(TARGET_AR)" \
+    RANLIB="$(TARGET_RANLIB)" \
+    CFLAGS="$(TARGET_CFLAGS)" \
+    LDFLAGS="$(TARGET_LDFLAGS)"
 endef
 
 define Package/secp256k1/install
-	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/dummy $(1)/usr/bin/dummy
+  $(INSTALL_DIR) $(1)/usr/lib
+  $(INSTALL_BIN) $(PKG_BUILD_DIR)/.libs/libsecp256k1.so* $(1)/usr/lib/
+  $(INSTALL_DIR) $(1)/usr/include
+  $(INSTALL_BIN) $(PKG_BUILD_DIR)/include/secp256k1*.h $(1)/usr/include/
 endef
 
 $(eval $(call BuildPackage,secp256k1))
+
 
