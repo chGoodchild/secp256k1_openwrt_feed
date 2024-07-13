@@ -46,12 +46,18 @@ define Build/Compile
     LDFLAGS="$(TARGET_LDFLAGS)"
 endef
 
+
 define Package/secp256k1/install
+  @echo "Creating directory: $(1)/usr/lib"
   $(INSTALL_DIR) $(1)/usr/lib
+  @echo "Installing shared libraries to: $(1)/usr/lib"
   $(INSTALL_BIN) $(PKG_BUILD_DIR)/.libs/libsecp256k1.so* $(1)/usr/lib/
+  @echo "Creating directory: $(1)/usr/include"
   $(INSTALL_DIR) $(1)/usr/include
+  @echo "Installing header files to: $(1)/usr/include"
   $(INSTALL_BIN) $(PKG_BUILD_DIR)/include/secp256k1*.h $(1)/usr/include/
 endef
+
 
 $(eval $(call BuildPackage,secp256k1))
 
