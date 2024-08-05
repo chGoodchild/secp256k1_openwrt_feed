@@ -6,9 +6,10 @@ PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/chGoodchild/nostr_client_relay.git
-PKG_SOURCE_VERSION:=master
+PKG_SOURCE_VERSION:=main
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+PKG_MIRROR_HASH:=63eb1153f7172fb30c0daaa684423b4558c35679deb21e61f0d943f7ab1ec6ff
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
