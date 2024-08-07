@@ -27,18 +27,24 @@ endef
 define Build/Prepare
 	$(call Build/Prepare/Default)
 	$(call GitCheckoutSubmodules)
+	cd $(PKG_BUILD_DIR) && ./tools/autogen.sh
 endef
 
 define Build/Configure
-	$(call Build/Configure/Default)
+	$(call Build/Configure/Default, \
+		--enable-elements \
+		--enable-builtin-memset \
+		--enable-debug \
+		--enable-tests \
+	)
 endef
 
 define Build/Compile
 	$(MAKE) -C $(PKG_BUILD_DIR) \
-	CC="$(TARGET_CC)" \
-	CFLAGS="$(TARGET_CFLAGS) -std=c99" \
-	LDFLAGS="$(TARGET_LDFLAGS)" \
-	all
+		CC="$(TARGET_CC)" \
+		CFLAGS="$(TARGET_CFLAGS) -std=c99" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
+		all
 endef
 
 define Package/libwally/install
@@ -47,3 +53,4 @@ define Package/libwally/install
 endef
 
 $(eval $(call BuildPackage,libwally))
+
