@@ -18,19 +18,29 @@ define Package/nostr_client_relay
   SECTION:=net
   CATEGORY:=Network
   TITLE:=Client relay for Nostr protocol
-  DEPENDS:=+libopenssl
+  DEPENDS:=+libopenssl +libsecp256k1 +libwally
 endef
 
 define Package/nostr_client_relay/description
   This package provides a client relay implementation for the Nostr decentralized communication protocol.
 endef
 
+TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include
+TARGET_LDFLAGS += -L$(STAGING_DIR)/usr/lib
+
+define Build/Prepare
+    mkdir -p $(PKG_BUILD_DIR)
+    $(CP) ./src/* $(PKG_BUILD_DIR)/
+endef
+
 CMAKE_OPTIONS += \
 	-DENABLE_SSL_SUPPORT=ON
+        -DCMAKE_C_FLAGS="$(TARGET_CFLAGS)"
 
 define Package/nostr_client_relay/install
-	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/nostr_client_relay $(1)/usr/bin/
+    $(INSTALL_DIR) $(1)/usr/bin
+    $(INSTALL_BIN) $(PKG_BUILD_DIR)/nostr_client_relay $(1)/usr/bin/
 endef
 
 $(eval $(call BuildPackage,nostr_client_relay))
+
