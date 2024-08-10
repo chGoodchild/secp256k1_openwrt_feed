@@ -25,8 +25,8 @@ define Package/nostr_client_relay/description
 	This package provides a client relay implementation for the Nostr decentralized communication protocol.
 endef
 
-TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include
-TARGET_LDFLAGS += -L$(STAGING_DIR)/usr/lib
+TARGET_CFLAGS += -I$(STAGING_DIR)/target-mips_24kc_musl/usr/include
+TARGET_LDFLAGS += -L$(STAGING_DIR)/target-mips_24kc_musl/usr/lib
 
 define Build/Prepare
 	mkdir -p $(PKG_BUILD_DIR)
@@ -35,7 +35,7 @@ define Build/Prepare
 endef
 
 CMAKE_OPTIONS += \
-	-DENABLE_SSL_SUPPORT=ON
+	-DENABLE_SSL_SUPPORT=ON \
 	-DCMAKE_C_FLAGS="$(TARGET_CFLAGS)"
 
 define Package/nostr_client_relay/install
