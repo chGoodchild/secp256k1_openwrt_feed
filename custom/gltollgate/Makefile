@@ -25,7 +25,7 @@ endef
 
 define Build/Prepare
 	mkdir -p $(PKG_BUILD_DIR)
-	$(CP) $(TOPDIR)/feeds/custom/GLTollGate/nostr/c/* $(PKG_BUILD_DIR)/
+	$(CP) $(TOPDIR)/../GLTollGate/nostr/c/* $(PKG_BUILD_DIR)/
 endef
 
 define Build/Compile
