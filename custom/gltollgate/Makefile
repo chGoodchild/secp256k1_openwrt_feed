@@ -31,7 +31,7 @@ endef
 define Build/Compile
 	$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_LDFLAGS) \
 	-I$(STAGING_DIR)/usr/include \
-	-I$(PKG_BUILD_DIR)/target-mips_24kc_musl/nostr_client_relay-1.0/src/nostril \
+	-I$(TOPDIR)/../nostr_client_relay/src/nostril \ 
 	-o $(PKG_BUILD_DIR)/generate_npub $(PKG_BUILD_DIR)/generate_npub.c \
 	-lwallycore -lssl -lcrypto -lsecp256k1
 endef
