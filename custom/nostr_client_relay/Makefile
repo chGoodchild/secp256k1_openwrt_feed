@@ -30,8 +30,15 @@ TARGET_LDFLAGS += -L$(STAGING_DIR)/target-mips_24kc_musl/usr/lib
 
 define Build/Prepare
 	mkdir -p $(PKG_BUILD_DIR)
-	$(CP) $(TOPDIR)/../nostr_client_relay/src/* $(PKG_BUILD_DIR)/
+	# Copy all files from the nostr_client_relay repository root
+	$(CP) $(TOPDIR)/../nostr_client_relay/* $(PKG_BUILD_DIR)/
 endef
+
+CMAKE_OPTIONS += \
+	-DENABLE_SSL_SUPPORT=ON \
+	-DCMAKE_C_FLAGS="$(TARGET_CFLAGS)" \
+	-DCMAKE_LIBRARY_PATH=$(STAGING_DIR)/target-mips_24kc_musl/usr/lib \
+	-DCMAKE_INCLUDE_PATH=$(STAGING_DIR)/target-mips_24kc_musl/usr/include
 
 CMAKE_OPTIONS += \
 	-DENABLE_SSL_SUPPORT=ON \
