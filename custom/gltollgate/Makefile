@@ -33,7 +33,7 @@ define Build/Compile
 	-I$(STAGING_DIR)/usr/include \
 	-I$(TOPDIR)/../nostr_client_relay/src/nostril \ 
 	-o $(PKG_BUILD_DIR)/generate_npub $(PKG_BUILD_DIR)/generate_npub.c \
-	-lwallycore -lssl -lcrypto -lsecp256k1
+	-lwallycore -lssl -lsecp256k1
 endef
 
 define Package/gltollgate/install
