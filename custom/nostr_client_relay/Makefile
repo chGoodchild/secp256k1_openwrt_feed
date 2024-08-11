@@ -30,8 +30,7 @@ TARGET_LDFLAGS += -L$(STAGING_DIR)/target-mips_24kc_musl/usr/lib
 
 define Build/Prepare
 	mkdir -p $(PKG_BUILD_DIR)
-	# Assuming GLTollGate and nostr_client_relay are cloned in $(TOPDIR)/feeds/custom
-	$(CP) $(TOPDIR)/feeds/custom/nostr_client_relay/src/* $(PKG_BUILD_DIR)/
+	$(CP) $(TOPDIR)/../nostr_client_relay/src/* $(PKG_BUILD_DIR)/
 endef
 
 CMAKE_OPTIONS += \
