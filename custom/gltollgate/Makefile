@@ -26,16 +26,21 @@ endef
 
 define Build/Prepare
 	mkdir -p $(PKG_BUILD_DIR)
-	# Clone only if the directory isn't already there (to save time during development)
-	if [ ! -d "$(PKG_BUILD_DIR)/.git" ]; then \
-		git clone $(PKG_SOURCE_URL) $(PKG_BUILD_DIR) --branch $(PKG_SOURCE_VERSION) --single-branch; \
+	# Check if the .git directory exists, indicating a repo clone is there
+	if [ ! -d "$(PKG_BUILD_DIR)/.git" ]; then
+		git clone $(PKG_SOURCE_URL) $(PKG_BUILD_DIR) --branch $(PKG_SOURCE_VERSION) --single-branch;
+	else
+		(cd $(PKG_BUILD_DIR); git fetch origin; git reset --hard $(PKG_SOURCE_VERSION))
 	fi
-	# Check out the specific branch and update
-	(cd $(PKG_BUILD_DIR); git fetch; git checkout $(PKG_SOURCE_VERSION); git submodule update --init --recursive)
-	# Copy from the specific subdirectory
-	$(CP) $(PKG_BUILD_DIR)/nostr/c/* $(PKG_BUILD_DIR)/
-	$(info Contents of PKG_BUILD_DIR after copying:)
-	$(shell ls -la $(PKG_BUILD_DIR))
+	# Ensuring submodules are updated in case they exist
+	(cd $(PKG_BUILD_DIR); git submodule update --init --recursive)
+	# Verify the correct subdirectory and copy from it
+	if [ -d "$(PKG_BUILD_DIR)/nostr/c" ]; then
+		$(CP) $(PKG_BUILD_DIR)/nostr/c/* $(PKG_BUILD_DIR)/
+	else
+	echo "The expected subdirectory does not exist."
+	exit 1
+	fi
 endef
 
 define Build/Prepare
