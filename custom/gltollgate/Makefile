@@ -26,7 +26,16 @@ endef
 
 define Build/Prepare
 	mkdir -p $(PKG_BUILD_DIR)
-	$(CP) ./$(PKG_NAME)-$(PKG_VERSION)/* $(PKG_BUILD_DIR)/
+	# Clone only if the directory isn't already there (to save time during development)
+	if [ ! -d "$(PKG_BUILD_DIR)/.git" ]; then \
+		git clone $(PKG_SOURCE_URL) $(PKG_BUILD_DIR) --branch $(PKG_SOURCE_VERSION) --single-branch; \
+	fi
+	# Check out the specific branch and update
+	(cd $(PKG_BUILD_DIR); git fetch; git checkout $(PKG_SOURCE_VERSION); git submodule update --init --recursive)
+	# Copy from the specific subdirectory
+	$(CP) $(PKG_BUILD_DIR)/nostr/c/* $(PKG_BUILD_DIR)/
+	$(info Contents of PKG_BUILD_DIR after copying:)
+	$(shell ls -la $(PKG_BUILD_DIR))
 endef
 
 define Build/Prepare
