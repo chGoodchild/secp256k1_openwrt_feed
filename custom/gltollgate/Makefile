@@ -34,12 +34,7 @@ define Build/Prepare
 	# Ensuring submodules are updated in case they exist
 	(cd $(PKG_BUILD_DIR); git submodule update --init --recursive)
 	# Verify the correct subdirectory and copy from it
-	if [ -d "$(PKG_BUILD_DIR)/nostr/c" ]; then
-		$(CP) $(PKG_BUILD_DIR)/nostr/c/* $(PKG_BUILD_DIR)/
-	else
-		echo "The expected subdirectory does not exist."
-		exit 1
-	fi
+	[ -d "$(PKG_BUILD_DIR)/nostr/c" ] && $(CP) $(PKG_BUILD_DIR)/nostr/c/* $(PKG_BUILD_DIR)/ || (echo "The expected subdirectory does not exist." && exit 1)
 endef
 
 define Package/gltollgate/install
