@@ -26,28 +26,20 @@ endef
 
 define Build/Prepare
 	mkdir -p $(PKG_BUILD_DIR)
-	# Check if the .git directory exists, indicating a repo clone is there
-	if [ ! -d "$(PKG_BUILD_DIR)/.git" ]; then
-		git clone $(PKG_SOURCE_URL) $(PKG_BUILD_DIR) --branch $(PKG_SOURCE_VERSION) --single-branch;
-	else
-		(cd $(PKG_BUILD_DIR); git fetch origin; git reset --hard $(PKG_SOURCE_VERSION))
-	fi
+	# Clean the build directory to ensure a fresh start
+	rm -rf $(PKG_BUILD_DIR)
+	mkdir -p $(PKG_BUILD_DIR)
+	# Clone the repository
+	git clone $(PKG_SOURCE_URL) $(PKG_BUILD_DIR) --branch $(PKG_SOURCE_VERSION) --single-branch
 	# Ensuring submodules are updated in case they exist
 	(cd $(PKG_BUILD_DIR); git submodule update --init --recursive)
 	# Verify the correct subdirectory and copy from it
 	if [ -d "$(PKG_BUILD_DIR)/nostr/c" ]; then
 		$(CP) $(PKG_BUILD_DIR)/nostr/c/* $(PKG_BUILD_DIR)/
 	else
-	echo "The expected subdirectory does not exist."
-	exit 1
+		echo "The expected subdirectory does not exist."
+		exit 1
 	fi
-endef
-
-define Build/Prepare
-	mkdir -p $(PKG_BUILD_DIR)
-	$(CP) ./$(PKG_NAME)-$(PKG_VERSION)/* $(PKG_BUILD_DIR)/
-	$(info Contents of PKG_BUILD_DIR:)
-	$(shell ls -la $(PKG_BUILD_DIR))
 endef
 
 define Package/gltollgate/install
