@@ -29,11 +29,11 @@ define Build/Prepare
 	$(CP) ./$(PKG_NAME)-$(PKG_VERSION)/* $(PKG_BUILD_DIR)/
 endef
 
-define Build/Compile
-	$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_LDFLAGS) \
-	-I$(STAGING_DIR)/usr/include \
-	-o $(PKG_BUILD_DIR)/generate_npub $(PKG_BUILD_DIR)/generate_npub.c \
-	-lwallycore -lssl -lcrypto -lsecp256k1
+define Build/Prepare
+	mkdir -p $(PKG_BUILD_DIR)
+	$(CP) ./$(PKG_NAME)-$(PKG_VERSION)/* $(PKG_BUILD_DIR)/
+	$(info Contents of PKG_BUILD_DIR:)
+	$(shell ls -la $(PKG_BUILD_DIR))
 endef
 
 define Package/gltollgate/install
