@@ -39,7 +39,13 @@ define Build/Compile
 	$(MAKE) -C $(PKG_BUILD_DIR) \
 		CC=$(TARGET_CC) \
 		CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include -I$(STAGING_DIR)/target-mips_24kc_musl/usr/include" \
-		LDFLAGS="$(TARGET_LDFLAGS) -L$(STAGING_DIR)/usr/lib -L$(STAGING_DIR)/target-mips_24kc_musl/usr/lib -lwallycore -lsecp256k1 -lssl -lcrypto" \
+		LDFLAGS="$(TARGET_LDFLAGS) \
+		-L$(STAGING_DIR)/usr/lib \
+		-L$(STAGING_DIR)/target-mips_24kc_musl/usr/lib \
+		-L$(STAGING_DIR)/target-mips_24kc_musl/root-ath79/usr/lib \
+		-L$(BUILD_DIR)/libwally-0.8.1/src/.libs \
+		-L$(BUILD_DIR)/secp256k1-0.1/.libs \
+		-lwallycore -lsecp256k1 -lssl -lcrypto" \
 		$(TARGET_CONFIGURE_OPTS)
 endef
 
