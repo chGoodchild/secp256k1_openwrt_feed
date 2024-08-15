@@ -35,6 +35,14 @@ define Build/Prepare
 	(cd $(PKG_BUILD_DIR); ./generate_config_h.sh)
 endef
 
+define Build/Compile
+	$(MAKE) -C $(PKG_BUILD_DIR) \
+		CC=$(TARGET_CC) \
+		CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include -I$(STAGING_DIR)/target-mips_24kc_musl/usr/include" \
+		LDFLAGS="$(TARGET_LDFLAGS) -L$(STAGING_DIR)/usr/lib -L$(STAGING_DIR)/target-mips_24kc_musl/usr/lib" \
+		$(TARGET_CONFIGURE_OPTS)
+endef
+
 define Package/gltollgate/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/generate_npub $(1)/usr/bin/
