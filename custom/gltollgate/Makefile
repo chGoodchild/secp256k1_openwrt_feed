@@ -26,15 +26,13 @@ endef
 
 define Build/Prepare
 	mkdir -p $(PKG_BUILD_DIR)
-	# Clean the build directory to ensure a fresh start
 	rm -rf $(PKG_BUILD_DIR)
 	mkdir -p $(PKG_BUILD_DIR)
-	# Clone the repository
 	git clone $(PKG_SOURCE_URL) $(PKG_BUILD_DIR) --branch $(PKG_SOURCE_VERSION) --single-branch
-	# Ensuring submodules are updated in case they exist
 	(cd $(PKG_BUILD_DIR); git submodule update --init --recursive)
-	# Verify the correct subdirectory and copy from it
 	[ -d "$(PKG_BUILD_DIR)/nostr/c" ] && $(CP) $(PKG_BUILD_DIR)/nostr/c/* $(PKG_BUILD_DIR)/ || (echo "The expected subdirectory does not exist." && exit 1)
+	# Execute the script to generate config.h
+	(cd $(PKG_BUILD_DIR); ./generate_config_h.sh)
 endef
 
 define Package/gltollgate/install
