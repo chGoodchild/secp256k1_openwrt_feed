@@ -46,7 +46,6 @@ define Build/Compile
 		-L$(BUILD_DIR)/libwally-0.8.1/src/.libs \
 		-L$(BUILD_DIR)/secp256k1-0.1/.libs \
 		-L$(STAGING_DIR)/target-mips_24kc_musl/root-ath79/usr/lib \
-		-lwallycore -lsecp256k1 -lssl -lcrypto" \
 		$(TARGET_CONFIGURE_OPTS)
 endef
 
