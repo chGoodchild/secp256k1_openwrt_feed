@@ -1,6 +1,7 @@
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=libwally
+# Updated PKG_NAME to reflect the consistent use of 'libwallycore' throughout the package
+PKG_NAME:=libwallycore
 PKG_VERSION:=0.8.1
 PKG_RELEASE:=1
 
@@ -12,7 +13,7 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/libwally
+define Package/libwallycore
   SECTION:=libs
   CATEGORY:=Libraries
   TITLE:=A library for Bitcoin wallet development
@@ -20,7 +21,7 @@ define Package/libwally
   DEPENDS:=+libgmp
 endef
 
-define Package/libwally/description
+define Package/libwallycore/description
   libwally-core is a cross-platform, cross-language collection of useful primitives for cryptocurrency wallets.
 endef
 
@@ -47,10 +48,10 @@ define Build/Compile
 		all
 endef
 
-define Package/libwally/install
+define Package/libwallycore/install
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(CP) $(PKG_BUILD_DIR)/src/.libs/*.so* $(1)/usr/lib/
 endef
 
-$(eval $(call BuildPackage,libwally))
+$(eval $(call BuildPackage,libwallycore))
 

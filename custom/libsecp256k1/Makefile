@@ -1,6 +1,6 @@
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=secp256k1
+PKG_NAME:=libsecp256k1
 PKG_VERSION:=0.1
 PKG_RELEASE:=1
 
@@ -13,14 +13,14 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/secp256k1
+define Package/libsecp256k1
   SECTION:=libs
   CATEGORY:=Libraries
   TITLE:=Optimized C library for EC operations on curve secp256k1
   URL:=https://github.com/bitcoin-core/secp256k1
 endef
 
-define Package/secp256k1/description
+define Package/libsecp256k1/description
   Optimized C library for EC operations on curve secp256k1
 endef
 
@@ -47,7 +47,7 @@ define Build/Compile
 	LDFLAGS="$(TARGET_LDFLAGS)"
 endef
 
-define Package/secp256k1/install
+define Package/libsecp256k1/install
 	@echo "Creating directory: $(1)/usr/lib"
 	$(INSTALL_DIR) $(1)/usr/lib
 	@echo "Installing shared libraries to: $(1)/usr/lib"
@@ -58,5 +58,5 @@ define Package/secp256k1/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/include/secp256k1*.h $(1)/usr/include/
 endef
 
-$(eval $(call BuildPackage,secp256k1))
+$(eval $(call BuildPackage,libsecp256k1))
 
