@@ -43,9 +43,9 @@ define Build/Compile
 		-L$(STAGING_DIR)/usr/lib \
 		-L$(STAGING_DIR)/target-mips_24kc_musl/usr/lib \
 		-L$(STAGING_DIR)/target-mips_24kc_musl/root-ath79/usr/lib \
-		-L$(BUILD_DIR)/libwally-0.8.1/src/.libs \
-		-L$(BUILD_DIR)/secp256k1-0.1/.libs \
-		$(BUILD_DIR)/secp256k1-0.1/.libs/libsecp256k1.a \
+		-L$(BUILD_DIR)/libwallycore-0.8.1/src/.libs \
+		-L$(BUILD_DIR)/libsecp256k1-0.1/.libs \
+		$(BUILD_DIR)/libsecp256k1-0.1/.libs/libsecp256k1.a \
 		-static" \
 		$(TARGET_CONFIGURE_OPTS)
 endef
