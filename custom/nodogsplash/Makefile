@@ -1,58 +1,56 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=nodogsplash
-PKG_VERSION:=1.0
+PKG_VERSION:=5.0.0
 PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/chGoodchild/nodogsplash.git
 PKG_SOURCE_VERSION:=master
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+PKG_MIRROR_HASH:=skip
+
+PKG_MAINTAINER:=Your Name <your.email@example.com>
+PKG_LICENSE:=GPL-2.0-or-later
+PKG_LICENSE_FILES:=COPYING
+
+PKG_BUILD_PARALLEL:=1
+PKG_FIXUP:=autoreconf
+PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
 
 define Package/nodogsplash
-	SECTION:=utils
-	CATEGORY:=Utilities
-	TITLE:=Nodogsplash
-	DEPENDS:=+libopenssl +libsecp256k1 +libwallycore
+  SUBMENU:=Captive Portals
+  SECTION:=net
+  CATEGORY:=Network
+  DEPENDS:=+libpthread +iptables-mod-ipopt +libmicrohttpd-no-ssl +libuci
+  TITLE:=Open public network gateway daemon
+  URL:=https://github.com/chGoodchild/nodogsplash
 endef
 
-define Package/gltollgate/description
-	Nodogsplash; username file can fit short e-cash notes
-endef
-
-define Build/Prepare
-	mkdir -p $(PKG_BUILD_DIR)
-	rm -rf $(PKG_BUILD_DIR)
-	mkdir -p $(PKG_BUILD_DIR)
-	git clone $(PKG_SOURCE_URL) $(PKG_BUILD_DIR) --branch $(PKG_SOURCE_VERSION) --single-branch
-	(cd $(PKG_BUILD_DIR); git submodule update --init --recursive)
-	[ -d "$(PKG_BUILD_DIR)/nostr/c" ] && $(CP) $(PKG_BUILD_DIR)/nostr/c/* $(PKG_BUILD_DIR)/ || (echo "The expected subdirectory does not exist." && exit 1)
-	# Execute the script to generate config.h
-	(cd $(PKG_BUILD_DIR); ./generate_config_h.sh)
-endef
-
-define Build/Compile
-	$(MAKE) -C $(PKG_BUILD_DIR) \
-		CC=$(TARGET_CC) \
-		CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include -I$(STAGING_DIR)/target-mips_24kc_musl/usr/include" \
-		LDFLAGS="$(TARGET_LDFLAGS) \
-		-L$(STAGING_DIR)/usr/lib \
-		-L$(STAGING_DIR)/target-mips_24kc_musl/usr/lib \
-		-L$(STAGING_DIR)/target-mips_24kc_musl/root-ath79/usr/lib \
-		-L$(BUILD_DIR)/libwallycore-0.8.1/src/.libs \
-		-L$(BUILD_DIR)/libsecp256k1-0.1/.libs \
-		$(BUILD_DIR)/libsecp256k1-0.1/.libs/libsecp256k1.a \
-		-static" \
-		$(TARGET_CONFIGURE_OPTS)
+define Package/nodogsplash/description
+  Nodogsplash offers a simple way to open a free hotspot providing
+  restricted access to an internet connection. Username field can fit short e-cash notes
 endef
 
 define Package/nodogsplash/install
 	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/nodogsplash $(1)/usr/bin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/ndsctl $(1)/usr/bin/
+
+	$(INSTALL_DIR) $(1)/etc/nodogsplash/htdocs/images
+	$(INSTALL_DIR) $(1)/etc/config
+	$(INSTALL_DIR) $(1)/etc/init.d
+	$(INSTALL_DIR) $(1)/etc/uci-defaults
+	$(INSTALL_DIR) $(1)/usr/lib/nodogsplash
+	$(CP) $(PKG_INSTALL_DIR)/etc/nodogsplash/htdocs/images/* $(1)/etc/nodogsplash/htdocs/images/
+	$(CP) $(PKG_INSTALL_DIR)/etc/nodogsplash/htdocs/* $(1)/etc/nodogsplash/htdocs/
+	$(INSTALL_CONF) $(PKG_INSTALL_DIR)/etc/nodogsplash/nodogsplash.conf $(1)/etc/nodogsplash/
+	$(INSTALL_CONF) ./files/nodogsplash.config $(1)/etc/config/nodogsplash
+	$(INSTALL_BIN) ./files/nodogsplash.init $(1)/etc/init.d/nodogsplash
+	$(INSTALL_BIN) ./files/nodogsplash.uci-defaults $(1)/etc/uci-defaults/99-nodogsplash
 endef
 
 $(eval $(call BuildPackage,nodogsplash))
-
