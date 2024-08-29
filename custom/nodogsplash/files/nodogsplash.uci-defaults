@@ -1,0 +1,18 @@
+#!/bin/sh
+
+uci -q get nodogsplash.@nodogsplash[0] > /dev/null || {
+	uci add nodogsplash nodogsplash
+	uci commit nodogsplash
+}
+
+uci -q batch <<-EOF >/dev/null
+	delete firewall.nodogsplash
+	set firewall.nodogsplash=include
+	set firewall.nodogsplash.type=script
+	set firewall.nodogsplash.path=/usr/lib/nodogsplash/restart.sh
+	set firewall.nodogsplash.family=ipv4
+	set firewall.nodogsplash.reload=1
+	commit firewall
+EOF
+
+exit 0
