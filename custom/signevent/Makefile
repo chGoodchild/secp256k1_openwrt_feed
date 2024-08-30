@@ -1,6 +1,6 @@
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=relaylink
+PKG_NAME:=signevent
 PKG_VERSION:=1.0
 PKG_RELEASE:=1
 
@@ -13,40 +13,37 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/gltollgate-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/relaylink
+define Package/signevent
 	SECTION:=utils
 	CATEGORY:=Utilities
-	TITLE:=RelayLink Utility
-	DEPENDS:=+libwebsockets +libopenssl +libcap +gltollgate
+	TITLE:=SignEvent Utility
+	DEPENDS:=+libsecp256k1 +gltollgate
 endef
 
-define Package/relaylink/description
-	RelayLink utility for OpenWrt
+define Package/signevent/description
+	SignEvent utility for OpenWrt
 endef
 
 define Build/Prepare
-	mkdir -p $(PKG_BUILD_DIR)
-	rm -rf $(PKG_BUILD_DIR)
-	mkdir -p $(PKG_BUILD_DIR)
-	git clone $(PKG_SOURCE_URL) $(PKG_BUILD_DIR) --branch $(PKG_SOURCE_VERSION) --single-branch
-	(cd $(PKG_BUILD_DIR); git submodule update --init --recursive)
-	[ -d "$(PKG_BUILD_DIR)/nostr/c" ] && $(CP) $(PKG_BUILD_DIR)/nostr/c/* $(PKG_BUILD_DIR)/ || (echo "The expected subdirectory does not exist." && exit 1)
-	# Execute the script to generate config.h
-	(cd $(PKG_BUILD_DIR); ./generate_config_h.sh)
+	# This section can be empty or minimal if you're using the gltollgate build directory
+	# You might need to copy sign_event.c to the build directory if it's not already there
+	$(CP) $(TOPDIR)/../TollGateNostrToolKit/sign_event.c $(PKG_BUILD_DIR)/
 endef
 
 define Build/Compile
-	$(TARGET_CC) $(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include \
-		-o $(PKG_BUILD_DIR)/RelayLink $(PKG_BUILD_DIR)/RelayLink.c \
+	$(TARGET_CC) $(TARGET_CFLAGS) \
+		-I$(STAGING_DIR)/usr/include \
+		-o $(PKG_BUILD_DIR)/sign_event \
+		$(PKG_BUILD_DIR)/sign_event.c \
 		$(TARGET_LDFLAGS) \
 		-L$(STAGING_DIR)/usr/lib \
-		-lwebsockets -lssl -lcrypto -lcap -latomic \
+		-lsecp256k1 \
 		-static
 endef
 
-define Package/relaylink/install
+define Package/signevent/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/RelayLink $(1)/usr/bin/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/sign_event $(1)/usr/bin/
 endef
 
-$(eval $(call BuildPackage,relaylink))
+$(eval $(call BuildPackage,signevent))
