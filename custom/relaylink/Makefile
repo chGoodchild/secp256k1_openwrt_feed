@@ -9,7 +9,7 @@ PKG_SOURCE_URL:=https://github.com/chGoodchild/GLTollGate.git
 PKG_SOURCE_VERSION:=42-generate-nsec-on-the-router
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+PKG_BUILD_DIR:=$(BUILD_DIR)/gltollgate-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -17,7 +17,7 @@ define Package/relaylink
 	SECTION:=utils
 	CATEGORY:=Utilities
 	TITLE:=RelayLink Utility
-	DEPENDS:=+libwebsockets +libopenssl +libcap
+	DEPENDS:=+libwebsockets +libopenssl +libcap +gltollgate
 endef
 
 define Package/relaylink/description
