@@ -1,6 +1,6 @@
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=gltollgate
+PKG_NAME:=relaylink
 PKG_VERSION:=1.0
 PKG_RELEASE:=1
 
@@ -13,15 +13,15 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/gltollgate
+define Package/relaylink
 	SECTION:=utils
 	CATEGORY:=Utilities
-	TITLE:=GLTollGate Utilities
-	DEPENDS:=+libopenssl +libsecp256k1 +libwallycore
+	TITLE:=RelayLink Utility
+	DEPENDS:=+libwebsockets +libopenssl +libcap
 endef
 
-define Package/gltollgate/description
-	GLTollGate Utilities including generate_npub tool.
+define Package/relaylink/description
+	RelayLink utility for OpenWrt
 endef
 
 define Build/Prepare
@@ -36,24 +36,17 @@ define Build/Prepare
 endef
 
 define Build/Compile
-	$(MAKE) -C $(PKG_BUILD_DIR) \
-		CC=$(TARGET_CC) \
-		CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include -I$(STAGING_DIR)/target-mips_24kc_musl/usr/include" \
-		LDFLAGS="$(TARGET_LDFLAGS) \
+	$(TARGET_CC) $(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include \
+		-o $(PKG_BUILD_DIR)/RelayLink $(PKG_BUILD_DIR)/RelayLink.c \
+		$(TARGET_LDFLAGS) \
 		-L$(STAGING_DIR)/usr/lib \
-		-L$(STAGING_DIR)/target-mips_24kc_musl/usr/lib \
-		-L$(STAGING_DIR)/target-mips_24kc_musl/root-ath79/usr/lib \
-		-L$(BUILD_DIR)/libwallycore-0.8.1/src/.libs \
-		-L$(BUILD_DIR)/libsecp256k1-0.1/.libs \
-		$(BUILD_DIR)/libsecp256k1-0.1/.libs/libsecp256k1.a \
-		-static" \
-		$(TARGET_CONFIGURE_OPTS)
+		-lwebsockets -lssl -lcrypto -lcap -latomic \
+		-static
 endef
 
-define Package/gltollgate/install
+define Package/relaylink/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/generate_npub $(1)/usr/bin/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/RelayLink $(1)/usr/bin/
 endef
 
-$(eval $(call BuildPackage,gltollgate))
-
+$(eval $(call BuildPackage,relaylink))
