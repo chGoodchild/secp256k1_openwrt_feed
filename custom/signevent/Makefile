@@ -45,8 +45,7 @@ define Build/Compile
 		$(TARGET_LDFLAGS) \
 		-L$(STAGING_DIR)/usr/lib \
 		-L$(STAGING_DIR)/root-ath79/usr/lib \
-		-lsecp256k1 \
-		-static
+		-lsecp256k1
 endef
 
 define Package/signevent/install
