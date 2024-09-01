@@ -33,7 +33,7 @@ define Build/Prepare
 	[ -d "$(PKG_BUILD_DIR)/nostr/c" ] && $(CP) $(PKG_BUILD_DIR)/nostr/c/* $(PKG_BUILD_DIR)/ || (echo "The expected subdirectory does not exist." && exit 1)
 	# Execute the script to generate config.h if it exists
 	[ -f "$(PKG_BUILD_DIR)/generate_config_h.sh" ] && (cd $(PKG_BUILD_DIR); ./generate_config_h.sh)
-	$(CP) $(STAGING_DIR)/usr/include/secp256k1/* $(PKG_BUILD_DIR)/
+	$(CP) $(STAGING_DIR)/target-mips_24kc_musl/root-ath79/usr/include/* $(PKG_BUILD_DIR)/
 endef
 
 define Build/Compile
