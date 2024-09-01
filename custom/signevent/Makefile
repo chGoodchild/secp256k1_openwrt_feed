@@ -24,7 +24,6 @@ define Package/signevent/description
 	SignEvent utility for OpenWrt
 endef
 
-
 define Build/Prepare
 	rm -rf $(PKG_BUILD_DIR)
 	mkdir -p $(PKG_BUILD_DIR)
@@ -33,19 +32,19 @@ define Build/Prepare
 	[ -d "$(PKG_BUILD_DIR)/nostr/c" ] && $(CP) $(PKG_BUILD_DIR)/nostr/c/* $(PKG_BUILD_DIR)/ || (echo "The expected subdirectory does not exist." && exit 1)
 	# Execute the script to generate config.h if it exists
 	[ -f "$(PKG_BUILD_DIR)/generate_config_h.sh" ] && (cd $(PKG_BUILD_DIR); ./generate_config_h.sh)
-	$(CP) $(STAGING_DIR)/target-mips_24kc_musl/root-ath79/usr/include/* $(PKG_BUILD_DIR)/
+	$(CP) $(STAGING_DIR)/root-ath79/usr/include/* $(PKG_BUILD_DIR)/
 endef
 
 define Build/Compile
 	$(TARGET_CC) $(TARGET_CFLAGS) \
 		-I$(PKG_BUILD_DIR) \
 		-I$(STAGING_DIR)/usr/include \
-		-I$(STAGING_DIR)/target-mips_24kc_musl/root-ath79/usr/include \
+		-I$(STAGING_DIR)/root-ath79/usr/include \
 		-o $(PKG_BUILD_DIR)/sign_event \
 		$(PKG_BUILD_DIR)/sign_event.c \
 		$(TARGET_LDFLAGS) \
 		-L$(STAGING_DIR)/usr/lib \
-		-L$(STAGING_DIR)/target-mips_24kc_musl/root-ath79/usr/lib \
+		-L$(STAGING_DIR)/root-ath79/usr/lib \
 		-lsecp256k1 \
 		-static
 endef
