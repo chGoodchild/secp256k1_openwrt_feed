@@ -38,6 +38,7 @@ endef
 define Build/Compile
 	$(TARGET_CC) $(TARGET_CFLAGS) \
 		-I$(STAGING_DIR)/usr/include \
+		-I$(STAGING_DIR)/usr/include/secp256k1 \
 		-o $(PKG_BUILD_DIR)/sign_event \
 		$(PKG_BUILD_DIR)/sign_event.c \
 		$(TARGET_LDFLAGS) \
