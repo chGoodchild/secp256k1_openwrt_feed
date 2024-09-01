@@ -26,6 +26,7 @@ endef
 
 
 define Build/Prepare
+	rm -rf $(PKG_BUILD_DIR)
 	mkdir -p $(PKG_BUILD_DIR)
 	git clone $(PKG_SOURCE_URL) $(PKG_BUILD_DIR) --branch $(PKG_SOURCE_VERSION) --single-branch
 	(cd $(PKG_BUILD_DIR); git submodule update --init --recursive)
