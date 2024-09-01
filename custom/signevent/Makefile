@@ -25,9 +25,10 @@ define Package/signevent/description
 endef
 
 define Build/Prepare
-	# This section can be empty or minimal if you're using the gltollgate build directory
-	# You might need to copy sign_event.c to the build directory if it's not already there
-	$(CP) $(PKG_BUILD_DIR)/nostr/c/* $(PKG_BUILD_DIR)/ || (echo "The expected subdirectory does not exist." && exit 1)
+	$(call Build/Prepare/Default)
+	[ -d "$(PKG_BUILD_DIR)/nostr/c" ] && $(CP) $(PKG_BUILD_DIR)/nostr/c/* $(PKG_BUILD_DIR)/ || (echo "The expected subdirectory does not exist." && exit 1)
+	# Execute the script to generate config.h if it exists
+	[ -f "$(PKG_BUILD_DIR)/generate_config_h.sh" ] && (cd $(PKG_BUILD_DIR); ./generate_config_h.sh)
 endef
 
 define Build/Compile
