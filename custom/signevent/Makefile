@@ -24,11 +24,14 @@ define Package/signevent/description
 	SignEvent utility for OpenWrt
 endef
 
+
 define Build/Prepare
-	$(call Build/Prepare/Default)
-	[ -d "$(PKG_BUILD_DIR)/nostr/c" ] && $(CP) $(PKG_BUILD_DIR)/nostr/c/* $(PKG_BUILD_DIR)/ || (echo "The expected subdirectory does not exist." && exit 1)
-	# Execute the script to generate config.h if it exists
-	[ -f "$(PKG_BUILD_DIR)/generate_config_h.sh" ] && (cd $(PKG_BUILD_DIR); ./generate_config_h.sh)
+    mkdir -p $(PKG_BUILD_DIR)
+    git clone $(PKG_SOURCE_URL) $(PKG_BUILD_DIR) --branch $(PKG_SOURCE_VERSION) --single-branch
+    (cd $(PKG_BUILD_DIR); git submodule update --init --recursive)
+    [ -d "$(PKG_BUILD_DIR)/nostr/c" ] && $(CP) $(PKG_BUILD_DIR)/nostr/c/* $(PKG_BUILD_DIR)/ || (echo "The expected subdirectory does not exist." && exit 1)
+    # Execute the script to generate config.h if it exists
+    [ -f "$(PKG_BUILD_DIR)/generate_config_h.sh" ] && (cd $(PKG_BUILD_DIR); ./generate_config_h.sh)
 endef
 
 define Build/Compile
