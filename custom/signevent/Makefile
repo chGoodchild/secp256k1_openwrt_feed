@@ -38,12 +38,14 @@ endef
 
 define Build/Compile
 	$(TARGET_CC) $(TARGET_CFLAGS) \
+		-I$(PKG_BUILD_DIR) \
 		-I$(STAGING_DIR)/usr/include \
-		-I$(STAGING_DIR)/usr/include/secp256k1 \
+		-I$(STAGING_DIR)/target-mips_24kc_musl/root-ath79/usr/include \
 		-o $(PKG_BUILD_DIR)/sign_event \
 		$(PKG_BUILD_DIR)/sign_event.c \
 		$(TARGET_LDFLAGS) \
 		-L$(STAGING_DIR)/usr/lib \
+		-L$(STAGING_DIR)/target-mips_24kc_musl/root-ath79/usr/lib \
 		-lsecp256k1 \
 		-static
 endef
