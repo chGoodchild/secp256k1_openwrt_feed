@@ -17,7 +17,7 @@ define Package/signevent
 	SECTION:=utils
 	CATEGORY:=Utilities
 	TITLE:=SignEvent Utility
-	DEPENDS:=+libsecp256k1 +gltollgate
+	DEPENDS:=+libsecp256k1 +gltollgate +tollgateconfigs
 endef
 
 define Package/signevent/description
