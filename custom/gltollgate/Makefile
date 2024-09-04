@@ -37,12 +37,11 @@ endef
 
 define Build/Compile
 	$(MAKE) -C $(PKG_BUILD_DIR) \
-		CC=$(TARGET_CC) \
-		CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include -I$(STAGING_DIR)/target-mips_24kc_musl/usr/include" \
+		CC="$(TARGET_CC)" \
+		CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include" \
 		LDFLAGS="$(TARGET_LDFLAGS) \
 		-L$(STAGING_DIR)/usr/lib \
-		-L$(STAGING_DIR)/target-mips_24kc_musl/usr/lib \
-		-L$(STAGING_DIR)/target-mips_24kc_musl/root-ath79/usr/lib \
+		-L$(STAGING_DIR)/lib \
 		-L$(BUILD_DIR)/libwallycore-0.8.1/src/.libs \
 		-L$(BUILD_DIR)/libsecp256k1-0.1/.libs \
 		$(BUILD_DIR)/libsecp256k1-0.1/.libs/libsecp256k1.a \
@@ -56,4 +55,3 @@ define Package/gltollgate/install
 endef
 
 $(eval $(call BuildPackage,gltollgate))
-
