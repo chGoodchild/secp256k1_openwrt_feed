@@ -23,11 +23,14 @@ endef
 
 define Package/tollgateconfigs/install
 	$(INSTALL_DIR) $(1)/etc/init.d
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/99-first-login $(1)/etc/init.d/
+	$(INSTALL_BIN) ./files/99-first-login $(1)/etc/init.d/
 
 	$(INSTALL_DIR) $(1)/lib/preinit
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/80_mount_root $(1)/lib/preinit/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/update_wireless_config.sh $(1)/lib/preinit/
+	$(INSTALL_BIN) ./files/80_mount_root $(1)/lib/preinit/
+	$(INSTALL_BIN) ./files/update_wireless_config.sh $(1)/lib/preinit/
+
+	$(INSTALL_DIR) $(1)/etc/rc.d
+	ln -s ../init.d/99-first-login $(1)/etc/rc.d/S99first-login
 endef
 
 define Build/Prepare
