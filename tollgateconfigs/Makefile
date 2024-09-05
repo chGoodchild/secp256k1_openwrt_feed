@@ -1,6 +1,6 @@
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=custom-files
+PKG_NAME:=tollgateconfigs
 PKG_VERSION:=1.0
 PKG_RELEASE:=1
 
