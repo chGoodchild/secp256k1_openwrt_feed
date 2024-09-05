@@ -21,7 +21,7 @@ define Build/Compile
 endef
 
 define Package/$(PKG_NAME)/install
-	$(INSTALL_DIR) $(1)/etc
+	# $(INSTALL_DIR) $(1)/etc
 	# $(CP) ./files/* $(1)/etc/
 endef
 
