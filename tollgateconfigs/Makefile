@@ -1,10 +1,9 @@
 include $(TOPDIR)/rules.mk
+include $(INCLUDE_DIR)/package.mk
 
 PKG_NAME:=tollgateconfigs
 PKG_VERSION:=1.0
 PKG_RELEASE:=1
-
-include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
 	SECTION:=base
@@ -21,8 +20,12 @@ define Build/Compile
 endef
 
 define Package/$(PKG_NAME)/install
-	# $(INSTALL_DIR) $(1)/etc
+	$(INSTALL_DIR) $(1)/etc
 	# $(CP) ./files/* $(1)/etc/
+endef
+
+define Build/Install
+	$(call Build/Install/Default)
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
