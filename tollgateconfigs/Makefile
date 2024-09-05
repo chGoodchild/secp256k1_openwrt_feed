@@ -6,14 +6,14 @@ PKG_RELEASE:=1
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/tollgateconfigs
+define Package/$(PKG_NAME)
   SECTION:=base
   CATEGORY:=Base system
   TITLE:=TollGate custom configurations
   DEPENDS:=
 endef
 
-define Package/tollgateconfigs/description
+define Package/$(PKG_NAME)/description
   Custom configurations and scripts for TollGate system.
 endef
 
@@ -21,7 +21,7 @@ define Build/Compile
 	# No compilation needed
 endef
 
-define Package/tollgateconfigs/install
+define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/99-first-login $(1)/etc/init.d/
 
@@ -38,4 +38,4 @@ define Build/Prepare
 	$(CP) ./files/* $(PKG_BUILD_DIR)/
 endef
 
-$(eval $(call BuildPackage,tollgateconfigs))
+$(eval $(call BuildPackage,$(PKG_NAME)))
