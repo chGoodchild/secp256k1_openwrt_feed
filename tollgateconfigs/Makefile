@@ -7,13 +7,13 @@ PKG_RELEASE:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
-  SECTION:=base
-  CATEGORY:=Base system
-  TITLE:=TollGate custom configurations
+	SECTION:=base
+	CATEGORY:=Base system
+	TITLE:=TollGate custom configurations
 endef
 
 define Package/$(PKG_NAME)/description
-  Custom configurations and scripts for TollGate system.
+	Custom configurations and scripts for TollGate system.
 endef
 
 define Build/Compile
@@ -21,8 +21,8 @@ define Build/Compile
 endef
 
 define Package/$(PKG_NAME)/install
-  $(INSTALL_DIR) $(1)/etc
-  $(CP) ./files/* $(1)/etc/
+	$(INSTALL_DIR) $(1)/etc
+	$(CP) ./files/* $(1)/etc/
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
