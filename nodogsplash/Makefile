@@ -25,7 +25,7 @@ define Package/nodogsplash
   SUBMENU:=Captive Portals
   SECTION:=net
   CATEGORY:=Network
-  DEPENDS:=+libpthread +iptables-mod-ipopt +libmicrohttpd-no-ssl +libuci +tollgateconfigs
+  DEPENDS:=+libpthread +iptables-mod-ipopt +libmicrohttpd-no-ssl +libuci
   TITLE:=Open public network gateway daemon
   URL:=https://github.com/chGoodchild/nodogsplash
 endef

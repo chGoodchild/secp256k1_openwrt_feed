@@ -17,7 +17,7 @@ define Package/relaylink
 	SECTION:=utils
 	CATEGORY:=Utilities
 	TITLE:=RelayLink Utility
-	DEPENDS:=+libwebsockets +libopenssl +libcap +gltollgate +tollgateconfigs
+	DEPENDS:=+libwebsockets +libopenssl +libcap +gltollgate
 endef
 
 define Package/relaylink/description

@@ -17,7 +17,7 @@ define Package/gltollgate
 	SECTION:=utils
 	CATEGORY:=Utilities
 	TITLE:=GLTollGate Utilities
-	DEPENDS:=+libopenssl +libsecp256k1 +libwallycore +tollgateconfigs
+	DEPENDS:=+libopenssl +libsecp256k1 +libwallycore
 endef
 
 define Package/gltollgate/description
