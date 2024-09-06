@@ -7,8 +7,6 @@ PKG_RELEASE:=1
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/chGoodchild/nodogsplash.git
 PKG_SOURCE_VERSION:=increase_username_field
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_MIRROR_HASH:=skip
 
 PKG_MAINTAINER:=Your Name <your.email@example.com>
@@ -35,6 +33,14 @@ define Package/nodogsplash/description
   restricted access to an internet connection. Username field can fit short e-cash notes
 endef
 
+define Package/nodogsplash/prepare
+	$(PKG_BUILD_DIR)/autogen.sh
+endef
+
+define Package/nodogsplash/compile
+	$(MAKE) -C $(PKG_BUILD_DIR) all
+endef
+
 define Package/nodogsplash/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/nodogsplash $(1)/usr/bin/
@@ -48,9 +54,9 @@ define Package/nodogsplash/install
 	$(CP) $(PKG_INSTALL_DIR)/etc/nodogsplash/htdocs/images/* $(1)/etc/nodogsplash/htdocs/images/
 	$(CP) $(PKG_INSTALL_DIR)/etc/nodogsplash/htdocs/* $(1)/etc/nodogsplash/htdocs/
 	$(INSTALL_CONF) $(PKG_INSTALL_DIR)/etc/nodogsplash/nodogsplash.conf $(1)/etc/nodogsplash/
-	$(INSTALL_CONF) ./files/nodogsplash.config $(1)/etc/config/nodogsplash
-	$(INSTALL_BIN) ./files/nodogsplash.init $(1)/etc/init.d/nodogsplash
-	$(INSTALL_BIN) ./files/nodogsplash.uci-defaults $(1)/etc/uci-defaults/99-nodogsplash
+	$(INSTALL_CONF)./files/nodogsplash.config $(1)/etc/config/nodogsplash
+	$(INSTALL_BIN)./files/nodogsplash.init $(1)/etc/init.d/nodogsplash
+	$(INSTALL_BIN)./files/nodogsplash.uci-defaults $(1)/etc/uci-defaults/99-nodogsplash
 endef
 
 $(eval $(call BuildPackage,nodogsplash))
