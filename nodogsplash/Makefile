@@ -20,17 +20,17 @@ PKG_INSTALL:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/nodogsplash
-  SUBMENU:=Captive Portals
-  SECTION:=net
-  CATEGORY:=Network
-  DEPENDS:=+libpthread +iptables-mod-ipopt +libmicrohttpd-no-ssl +libuci
-  TITLE:=Open public network gateway daemon
-  URL:=https://github.com/chGoodchild/nodogsplash
+	SUBMENU:=Captive Portals
+	SECTION:=net
+	CATEGORY:=Network
+	DEPENDS:=+libpthread +iptables-mod-ipopt +libmicrohttpd-no-ssl +libuci
+	TITLE:=Open public network gateway daemon
+	URL:=https://github.com/chGoodchild/nodogsplash
 endef
 
 define Package/nodogsplash/description
-  Nodogsplash offers a simple way to open a free hotspot providing
-  restricted access to an internet connection. Username field can fit short e-cash notes
+	Nodogsplash offers a simple way to open a free hotspot providing
+	restricted access to an internet connection. Username field can fit short e-cash notes
 endef
 
 define Package/nodogsplash/prepare
