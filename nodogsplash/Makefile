@@ -6,7 +6,7 @@ PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/chGoodchild/nodogsplash.git
-PKG_SOURCE_VERSION:=increase_username_field
+PKG_SOURCE_VERSION:=must_build
 PKG_MIRROR_HASH:=skip
 
 PKG_MAINTAINER:=Your Name <your.email@example.com>
